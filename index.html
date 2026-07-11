@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WealthWise — Avatar-Based Digital Wealth Advisor | IDBI Innovate 2026</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234a3aa7'/%3E%3Ctext x='16' y='23' font-size='19' font-weight='bold' font-family='sans-serif' fill='white' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --page:#0d0d0d;--surf:#1a1a19;--surf2:#232322;--border:rgba(255,255,255,.10);
+  --ink:#fff;--sec:#c3c2b7;--mut:#898781;--grid:#2c2c2a;
+  --s1:#3987e5;--s2:#199e70;--s3:#c98500;--s5:#9085e9;--good:#0ca30c;--crit:#d03b3b;
+  --accent:#9085e9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
+.stage{display:grid;grid-template-columns:1fr 400px 1fr;gap:30px;max-width:1240px;margin:0 auto;padding:30px 20px 60px;align-items:start}
+.side h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px}
+.side p{color:var(--sec);font-size:13.5px;margin-bottom:14px}
+.side .pt{display:flex;gap:10px;margin-bottom:12px;color:var(--sec);font-size:13px}
+.side .pt b{color:var(--ink)}
+.side .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;margin-top:6px}
+.brand{display:flex;gap:10px;align-items:center;margin-bottom:22px}
+.brand .lg{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#4a3aa7,var(--s5));display:grid;place-items:center;font-weight:800}
+.brand .t{font-size:15px;font-weight:700}
+.brand .s{color:var(--mut);font-size:11px}
+/* phone */
+.phone{background:#000;border:1px solid var(--border);border-radius:38px;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.screen{background:var(--page);border-radius:28px;overflow:hidden;height:760px;display:flex;flex-direction:column}
+.appbar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surf);border-bottom:1px solid var(--border)}
+.appbar .ttl{font-weight:700;font-size:14px}
+.appbar .sub{font-size:10.5px;color:var(--mut)}
+.tabs{display:flex;background:var(--surf);border-bottom:1px solid var(--border)}
+.tab{flex:1;text-align:center;padding:9px 0;font-size:12px;color:var(--mut);cursor:pointer;border-bottom:2px solid transparent;font-weight:600}
+.tab.on{color:var(--ink);border-color:var(--accent)}
+.view{flex:1;overflow-y:auto;display:none;flex-direction:column}
+.view.on{display:flex}
+/* avatar */
+.avwrap{display:flex;justify-content:center;padding:14px 0 4px;background:radial-gradient(circle at 50% 0%,rgba(144,133,233,.14),transparent 70%)}
+#avatar{width:104px;height:104px}
+.avname{text-align:center;font-size:11px;color:var(--mut);padding-bottom:8px}
+.avname b{color:var(--sec)}
+/* chat */
+.chat{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+.msg{max-width:86%;padding:9px 12px;border-radius:14px;font-size:12.8px;white-space:pre-line}
+.msg.bot{background:var(--surf2);border:1px solid var(--border);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.me{background:var(--s1);align-self:flex-end;border-bottom-right-radius:4px}
+.msg .mini{display:block;margin-top:6px;font-size:11px;color:var(--mut)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:8px 14px}
+.chip{background:transparent;border:1px solid var(--accent);color:var(--accent);border-radius:99px;padding:5px 11px;font-size:11.5px;cursor:pointer;font-family:inherit}
+.chip:hover{background:rgba(144,133,233,.12)}
+.inrow{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border);background:var(--surf)}
+.inrow input{flex:1;background:var(--page);border:1px solid var(--border);border-radius:99px;color:var(--ink);padding:9px 14px;font-size:12.5px;font-family:inherit;outline:none}
+.inrow button{background:var(--accent);border:0;border-radius:99px;width:38px;height:38px;color:#fff;font-size:15px;cursor:pointer}
+/* portfolio view */
+.pv{padding:14px 16px}
+.pv .nw{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.pv .nw .l{color:var(--mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.pv .nw .v{font-size:26px;font-weight:750}
+.pv .nw .d{color:var(--good);font-size:12px;font-weight:600}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:13px;margin-bottom:12px}
+.card h4{font-size:11px;color:var(--sec);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.leg{font-size:11px;color:var(--sec);display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.leg .sw{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:6px}
+.insight{border-left:3px solid var(--s3);background:rgba(201,133,0,.08);border-radius:8px;padding:9px 11px;font-size:12px;color:var(--sec);margin-bottom:8px}
+.insight b{color:var(--ink)}
+/* goal view */
+.gv{padding:16px}
+.gv label{display:block;font-size:12px;color:var(--sec);margin:12px 0 4px}
+.gv input[type=range]{width:100%;accent-color:var(--accent)}
+.gv .big{font-size:24px;font-weight:750}
+.gv .res{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:14px}
+.gv .res .row{display:flex;justify-content:space-between;font-size:12.5px;color:var(--sec);padding:4px 0}
+.gv .res .row b{color:var(--ink);font-variant-numeric:tabular-nums}
+.foot{color:var(--mut);font-size:11px;text-align:center;padding:16px}
+@media(max-width:1080px){.stage{grid-template-columns:1fr;justify-items:center}.side{max-width:400px}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="side">
+    <div class="brand"><div class="lg">W</div><div><div class="t">WealthWise</div><div class="s">IDBI Innovate 2026 · Track 01</div></div></div>
+    <h2>Wealth advisory for every customer, not just the top 1%.</h2>
+    <p>An avatar-based AI wealth advisor that lives inside the bank's mobile app — it reads the customer's own transaction & investment behaviour and turns it into timely, personalized, data-driven guidance.</p>
+    <div class="pt"><div class="dot"></div><div><b>Avatar-led conversations.</b> "Dhan" speaks (browser TTS), listens, and explains in plain language.</div></div>
+    <div class="pt"><div class="dot"></div><div><b>Personalized, not generic.</b> Every answer is computed from the customer's live profile: income, spends, surplus, allocation, goals.</div></div>
+    <div class="pt"><div class="dot"></div><div><b>Scalable by design.</b> Pure API-driven advisory engine — one deployment serves every mobile-banking customer.</div></div>
+  </div>
+
+  <div class="phone"><div class="screen">
+    <div class="appbar">
+      <div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#4a3aa7,var(--s5));display:grid;place-items:center;font-weight:800;font-size:13px">W</div>
+      <div><div class="ttl">WealthWise</div><div class="sub">IDBI Mobile · Priya Sharma · Moderate risk</div></div>
+      <button id="voiceBtn" title="Toggle avatar voice" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:8px;color:var(--sec);padding:4px 9px;font-size:11px;cursor:pointer">🔊 Voice on</button>
+    </div>
+    <div class="tabs">
+      <div class="tab on" data-v="chat">Advisor</div>
+      <div class="tab" data-v="portfolio">Portfolio</div>
+      <div class="tab" data-v="goal">Goal Planner</div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="view on" id="v-chat">
+      <div class="avwrap">
+        <svg id="avatar" viewBox="0 0 120 120">
+          <defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#4a3aa7"/><stop offset="1" stop-color="#9085e9"/>
+          </linearGradient></defs>
+          <circle cx="60" cy="60" r="54" fill="url(#ag)" opacity="0.16"/>
+          <circle cx="60" cy="60" r="44" fill="url(#ag)"/>
+          <g id="eyes">
+            <circle cx="46" cy="52" r="5.5" fill="#fff"/><circle cx="74" cy="52" r="5.5" fill="#fff"/>
+            <circle cx="47.5" cy="53" r="2.6" fill="#1a1a2e"/><circle cx="75.5" cy="53" r="2.6" fill="#1a1a2e"/>
+          </g>
+          <g id="blink" opacity="0">
+            <rect x="38" y="49" width="17" height="7" rx="3.5" fill="url(#ag)"/>
+            <rect x="66" y="49" width="17" height="7" rx="3.5" fill="url(#ag)"/>
+          </g>
+          <path id="mouth" d="M46 74 Q60 84 74 74" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <circle cx="60" cy="60" r="53" fill="none" stroke="#9085e9" stroke-width="1.4" opacity="0.5">
+            <animate attributeName="r" values="50;54;50" dur="3.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.45;0.12;0.45" dur="3.2s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+      <div class="avname"><b>Dhan</b> · your wealth avatar</div>
+      <div class="chat" id="chat"></div>
+      <div class="chips" id="chips"></div>
+      <div class="inrow">
+        <input id="inp" placeholder="Ask Dhan anything about your money…" autocomplete="off">
+        <button id="send">➤</button>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="view pv" id="v-portfolio">
+      <div class="nw"><div class="l">Net investable wealth</div><div class="v">₹12.4 L</div><div class="d">▲ ₹38,400 (3.2%) this quarter</div></div>
+      <div class="card"><h4>Asset allocation — current vs recommended</h4>
+        <div style="display:flex;gap:14px;align-items:center">
+          <svg id="donut" width="120" height="120" viewBox="0 0 120 120"></svg>
+          <div class="leg" id="dleg"></div>
+        </div>
+      </div>
+      <div class="card"><h4>Dhan's insights this month</h4>
+        <div class="insight"><b>₹18,500 idle surplus</b> detected after average spends — a ₹15,000 SIP fits your moderate profile.</div>
+        <div class="insight"><b>82% of investments in FDs</b> earning ~6.8% — inflation-adjusted return is near zero. Consider rebalancing toward index funds.</div>
+        <div class="insight"><b>Food delivery spends up 41%</b> vs your 6-month average (₹6,200 last month).</div>
+      </div>
+      <div class="card"><h4>12-month wealth trend (₹ lakh)</h4><svg id="trend" viewBox="0 0 340 120" style="width:100%"></svg></div>
+    </div>
+
+    <!-- GOAL -->
+    <div class="view gv" id="v-goal">
+      <h3 style="font-size:15px">Plan a goal with Dhan</h3>
+      <label>Goal amount: <span class="big" id="gAmtL">₹25 L</span></label>
+      <input type="range" id="gAmt" min="2" max="200" value="25" step="1">
+      <label>Years to goal: <span class="big" id="gYrsL">7</span></label>
+      <input type="range" id="gYrs" min="1" max="30" value="7" step="1">
+      <label>Expected annual return: <span class="big" id="gRetL">11%</span> <span style="color:var(--mut);font-size:11px">(equity-tilted, moderate risk)</span></label>
+      <input type="range" id="gRet" min="5" max="15" value="11" step="0.5">
+      <div class="res">
+        <div class="row"><span>Required monthly SIP</span><b id="rSip">—</b></div>
+        <div class="row"><span>Total you invest</span><b id="rInv">—</b></div>
+        <div class="row"><span>Wealth gained (returns)</span><b id="rGain">—</b></div>
+        <div class="row" style="border-top:1px solid var(--grid);margin-top:6px;padding-top:8px"><span>Fits your ₹18.5k monthly surplus?</span><b id="rFit">—</b></div>
+      </div>
+      <svg id="proj" viewBox="0 0 340 140" style="width:100%;margin-top:14px"></svg>
+    </div>
+  </div></div>
+
+  <div class="side">
+    <h2 style="font-size:16px">How it integrates</h2>
+    <div class="pt"><div class="dot"></div><div><b>Data in:</b> CBS balances, card & UPI spends, deposit/MF holdings, AA-consented external assets.</div></div>
+    <div class="pt"><div class="dot"></div><div><b>Advisory engine:</b> deterministic finance math (SIP/goal/allocation) + LLM layer for conversation, with guardrails — advice is always computed, never hallucinated.</div></div>
+    <div class="pt"><div class="dot"></div><div><b>Surface:</b> SDK module inside the IDBI mobile app; the avatar runs on-device (SVG + TTS), so it scales to millions at near-zero marginal cost.</div></div>
+    <div class="pt"><div class="dot"></div><div><b>Compliance:</b> product suggestions restricted to bank-approved catalogue; full audit log; SEBI IA-aligned suitability checks against the customer's risk profile.</div></div>
+    <p style="margin-top:16px;font-size:11.5px;color:var(--mut)">Demo profile is synthetic. In the live prototype the same questions are answered from the customer's real (consented) data. Voice uses the free browser Speech API.</p>
+  </div>
+</div>
+
+<script>
+// ---------- demo customer profile (synthetic) ----------
+const P = {
+  name:"Priya", income:95000, avgSpend:76500, surplus:18500,
+  netWorth:1240000, fdShare:0.82,
+  alloc:[["Fixed deposits",62,"#3987e5"],["Mutual funds",18,"#199e70"],["Gold",12,"#c98500"],["Savings idle",8,"#9085e9"]],
+  reco:[["Index/flexi-cap funds",45],["Debt funds & FD ladder",30],["Gold (SGB)",10],["Emergency buffer",15]],
+  spendTop:[["Rent",28000],["Food & delivery",14200],["Transport",6800],["Shopping",9400]],
+  trend:[10.2,10.4,10.5,10.9,11.0,11.2,11.4,11.5,11.8,12.0,12.2,12.4]
+};
+
+// ---------- avatar ----------
+const blink=document.getElementById('blink');
+setInterval(()=>{blink.style.opacity=1;setTimeout(()=>blink.style.opacity=0,140);},3400);
+const mouth=document.getElementById('mouth');
+let talking=null, voiceOn=true;
+function startTalk(){let f=0;stopTalk();talking=setInterval(()=>{f=!f;
+  mouth.setAttribute('d',f?'M46 76 Q60 70 74 76':'M46 74 Q60 84 74 74');},160);}
+function stopTalk(){if(talking){clearInterval(talking);talking=null;}
+  mouth.setAttribute('d','M46 74 Q60 84 74 74');}
+function speak(text){
+  if(!voiceOn||!window.speechSynthesis)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/₹/g,'rupees ').replace(/[•▲]/g,''));
+  u.rate=1.02;u.pitch=1.05;
+  u.onstart=startTalk;u.onend=stopTalk;u.onerror=stopTalk;
+  speechSynthesis.speak(u);
+}
+document.getElementById('voiceBtn').onclick=e=>{
+  voiceOn=!voiceOn;if(!voiceOn){speechSynthesis?.cancel();stopTalk();}
+  e.target.textContent=voiceOn?'🔊 Voice on':'🔇 Voice off';
+};
+
+// ---------- advisory engine (deterministic, profile-driven) ----------
+const fmt=n=>'₹'+n.toLocaleString('en-IN');
+function sipFor(target,years,ret){const i=ret/1200,n=years*12;
+  return target*i/((Math.pow(1+i,n)-1)*(1+i));}
+const INTENTS=[
+ {k:/how am i|doing|health|summary|overview/i,r:()=>
+  `Here's your snapshot, ${P.name}:\n• Net investable wealth: ${fmt(P.netWorth)} (▲3.2% this quarter)\n• Monthly surplus after spends: ${fmt(P.surplus)}\n• Allocation alert: ${Math.round(P.fdShare*100)}% sits in FDs earning ~6.8% — that barely beats inflation.\n\nYour money is safe but lazy. Want me to put your surplus to work?`},
+ {k:/spend|money go|expense|kharcha/i,r:()=>
+  `Last month you spent ${fmt(P.avgSpend)}. Top heads:\n`+P.spendTop.map(([k,v])=>`• ${k}: ${fmt(v)}`).join('\n')+`\n\nFood & delivery is 41% above your 6-month average. Trimming it to trend frees ~₹4,000/month — that's an extra SIP.`},
+ {k:/invest|surplus|sip|start/i,r:()=>
+  `You reliably keep ${fmt(P.surplus)} unspent each month. For your moderate risk profile I'd deploy ₹15,000:\n• ₹9,000 → Nifty index fund\n• ₹4,000 → flexi-cap fund\n• ₹2,000 → gold SGB\n\nThat keeps ₹3,500 as buffer. At 11% p.a. this becomes ~₹12.9 L in 5 years. Shall I open the Goal Planner?`},
+ {k:/goal|retire|house|car|education|wedding/i,r:()=>
+  `Let's plan it properly — I've opened the Goal Planner tab. Set the amount and horizon; I'll compute the exact monthly SIP and check it against your ${fmt(P.surplus)} surplus.`,go:'goal'},
+ {k:/tax|80c|elss/i,r:()=>
+  `Quick tax scan: you've used ₹78,000 of your ₹1.5 L 80C limit (EPF + LIC). Routing ₹6,000/month into an ELSS fund fills the gap, saves ~₹22,500 tax at your slab, and adds equity exposure you're missing. Two birds, one SIP.`},
+ {k:/fd|fixed deposit|safe/i,r:()=>
+  `Your FDs: ${fmt(Math.round(P.netWorth*P.fdShare))} at ~6.8%. After 6% inflation, real return ≈ 0.8%. Keep 6 months of expenses (${fmt(P.avgSpend*6)}) in FD/liquid as emergency buffer; the rest earns more in index + debt funds. I can show the rebalance in the Portfolio tab.`,go:'portfolio'},
+ {k:/risk|profile/i,r:()=>
+  `You're profiled <b>Moderate</b> — from your questionnaire plus behaviour (steady salary, 6-month expense buffer, no panic withdrawals in the March dip). It means: ~55% equity is appropriate, and I'll never suggest F&O or crypto.`},
+ {k:/hi|hello|hey|namaste/i,r:()=>
+  `Namaste ${P.name}! I'm Dhan, your wealth avatar. I watch your money so you don't have to — spends, surplus, investments, goals and tax. Try a quick question below.`},
+];
+const FALLBACK=`I can help with: your financial snapshot, where your money goes, investing your surplus, goal planning, tax saving, or your FD strategy. In production I hand anything else to the bank's LLM layer with strict advisory guardrails.`;
+
+const chat=document.getElementById('chat');
+function add(t,who){const d=document.createElement('div');d.className='msg '+who;
+  d.innerHTML=t.replace(/\n/g,'<br>');chat.appendChild(d);chat.scrollTop=chat.scrollHeight;}
+function botReply(q){
+  const it=INTENTS.find(i=>i.k.test(q));
+  const txt=it?it.r():FALLBACK;
+  setTimeout(()=>{add(txt,'bot');speak(txt.replace(/<[^>]+>/g,''));
+    if(it?.go)setTimeout(()=>switchTab(it.go),1400);},420);
+}
+function ask(q){add(q,'me');botReply(q);}
+document.getElementById('send').onclick=()=>{const v=inp.value.trim();if(v){ask(v);inp.value='';}};
+const inp=document.getElementById('inp');
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'){const v=inp.value.trim();if(v){ask(v);inp.value='';}}});
+const CHIPS=["How am I doing?","Where does my money go?","Invest my surplus","Plan a goal","Save tax"];
+const chips=document.getElementById('chips');
+CHIPS.forEach(c=>{const b=document.createElement('button');b.className='chip';b.textContent=c;
+  b.onclick=()=>ask(c);chips.appendChild(b);});
+
+// ---------- tabs ----------
+function switchTab(v){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===v));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.v));
+
+// ---------- portfolio charts ----------
+(function donut(){
+  const svg=document.getElementById('donut'),R=44,C=2*Math.PI*R;let off=0;
+  P.alloc.forEach(([n,v,col])=>{
+    const e=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    e.setAttribute('cx',60);e.setAttribute('cy',60);e.setAttribute('r',R);
+    e.setAttribute('fill','none');e.setAttribute('stroke',col);e.setAttribute('stroke-width',15);
+    e.setAttribute('stroke-dasharray',`${C*v/100-2} ${C-C*v/100+2}`);
+    e.setAttribute('stroke-dashoffset',-off);e.setAttribute('transform','rotate(-90 60 60)');
+    svg.appendChild(e);off+=C*v/100;
+    const li=document.createElement('div');
+    li.innerHTML=`<span class="sw" style="background:${col}"></span>${n} — <b>${v}%</b>`;
+    document.getElementById('dleg').appendChild(li);
+  });
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',60);t.setAttribute('y',64);t.setAttribute('text-anchor','middle');
+  t.setAttribute('fill','#c3c2b7');t.setAttribute('font-size','11');t.textContent='current';
+  svg.appendChild(t);
+})();
+(function trend(){
+  const svg=document.getElementById('trend'),W=340,H=120,PLT=10,PB=18,PL=30;
+  const mn=Math.min(...P.trend)*0.98,mx=Math.max(...P.trend)*1.02;
+  const x=i=>PL+i*(W-PL-8)/(P.trend.length-1), y=v=>PLT+(H-PLT-PB)*(1-(v-mn)/(mx-mn));
+  [mn,(mn+mx)/2,mx].forEach(v=>{
+    svg.innerHTML+=`<line x1="${PL}" x2="${W-8}" y1="${y(v)}" y2="${y(v)}" stroke="#2c2c2a"/>`+
+    `<text x="${PL-4}" y="${y(v)+3}" fill="#898781" font-size="8.5" text-anchor="end">${v.toFixed(1)}</text>`;});
+  svg.innerHTML+=`<path d="M${P.trend.map((v,i)=>`${i?'L':''}${x(i)},${y(v)}`).join(' ')}" fill="none" stroke="#9085e9" stroke-width="2" stroke-linecap="round"/>`;
+})();
+
+// ---------- goal planner ----------
+const gA=document.getElementById('gAmt'),gY=document.getElementById('gYrs'),gR=document.getElementById('gRet');
+function goal(){
+  const A=+gA.value*100000,Y=+gY.value,R=+gR.value;
+  document.getElementById('gAmtL').textContent='₹'+gA.value+' L';
+  document.getElementById('gYrsL').textContent=Y;
+  document.getElementById('gRetL').textContent=R+'%';
+  const sip=sipFor(A,Y,R),inv=sip*Y*12;
+  document.getElementById('rSip').textContent=fmt(Math.round(sip));
+  document.getElementById('rInv').textContent=fmt(Math.round(inv));
+  document.getElementById('rGain').textContent=fmt(Math.round(A-inv));
+  const fit=sip<=P.surplus;
+  const f=document.getElementById('rFit');
+  f.textContent=fit?'Yes — comfortably':'No — extend horizon or trim goal';
+  f.style.color=fit?'#0ca30c':'#d03b3b';
+  // projection
+  const svg=document.getElementById('proj'),W=340,H=140,PB=18,PL=34;
+  let bal=0;const pts=[];
+  for(let m=0;m<=Y*12;m++){bal=bal*(1+R/1200)+sip;if(m%Math.max(1,Math.round(Y*12/24))===0||m===Y*12)pts.push([m,bal]);}
+  const mx=A*1.06;
+  const x=m=>PL+m*(W-PL-8)/(Y*12), y=v=>8+(H-8-PB)*(1-v/mx);
+  svg.innerHTML=[0.25,0.5,0.75,1].map(t=>
+    `<line x1="${PL}" x2="${W-8}" y1="${y(mx*t)}" y2="${y(mx*t)}" stroke="#2c2c2a"/>`+
+    `<text x="${PL-4}" y="${y(mx*t)+3}" fill="#898781" font-size="8.5" text-anchor="end">${(mx*t/100000).toFixed(0)}L</text>`).join('')+
+    `<line x1="${PL}" x2="${W-8}" y1="${y(A)}" y2="${y(A)}" stroke="#199e70" stroke-dasharray="4 4"/>`+
+    `<text x="${W-10}" y="${y(A)-4}" fill="#199e70" font-size="9" text-anchor="end">goal</text>`+
+    `<path d="M${pts.map(([m,v],i)=>`${i?'L':''}${x(m)},${y(Math.min(v,mx))}`).join(' ')}" fill="none" stroke="#9085e9" stroke-width="2"/>`+
+    `<text x="${(PL+W)/2}" y="${H-4}" fill="#898781" font-size="9" text-anchor="middle">months → corpus growth at ${R}% p.a.</text>`;
+}
+[gA,gY,gR].forEach(e=>e.addEventListener('input',goal));goal();
+
+// ---------- opening message ----------
+setTimeout(()=>{const t=`Namaste ${P.name}! I'm Dhan 👋 I noticed ${fmt(P.surplus)} sitting idle after last month's spends, and 82% of your wealth is in FDs. Ask me anything — or tap a quick question.`;
+  add(t,'bot');speak(t);},600);
+</script>
+</body>
+</html>
