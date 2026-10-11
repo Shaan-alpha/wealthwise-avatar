@@ -29,10 +29,12 @@ cannot provide timely, personalized guidance at scale.
 
 ### Design principle: computed, never hallucinated
 
-Deterministic finance math (SIP/goal/allocation/tax) is the source of truth;
-an LLM layer handles open conversation with strict guardrails and a
-bank-approved product catalogue. Advice is SEBI-IA suitability-checked
-against the customer's risk profile.
+Deterministic finance math (SIP/goal/allocation/tax) is the source of truth.
+In this prototype it is the whole engine: chat questions are keyword-matched
+to scripted, profile-driven answers in the browser, with no LLM or network
+call. The planned production addition is an LLM layer for open conversation
+with strict guardrails and a bank-approved product catalogue, plus SEBI-IA
+suitability checks of advice against the customer's risk profile.
 
 ## Run it
 
